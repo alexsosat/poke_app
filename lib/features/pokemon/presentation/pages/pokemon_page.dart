@@ -6,20 +6,14 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "../cubits/pokemon_cubit.dart";
 
 @RoutePage()
-class PokemonPage extends StatelessWidget
-{
+class PokemonPage extends StatelessWidget {
   const PokemonPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    
-    return Scaffold(
-      body: BlocProvider(
-        create: (context) => PokemonCubit(),
-        child: Center(
-          child: Text("Created with clean arq brick"),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+    body: BlocProvider(
+      create: (context) => PokemonCubit(),
+      child: const Center(child: Text("Created with clean arq brick")),
+    ),
+  );
 }
