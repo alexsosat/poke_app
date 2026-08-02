@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter_common_classes/flutter_common_classes.dart";
 
 import "../../../../core/constants/theme/app_separators.dart";
+import "../../../../core/gen/assets.gen.dart";
 import "../../../../core/routes/app_router.gr.dart";
 import "../cubits/splash_screen_cubit.dart";
 
@@ -21,7 +22,6 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: context.colorScheme.secondary,
     body: Center(
       child: MultiBlocProvider(
         providers: [
@@ -84,13 +84,34 @@ class _SplashScreenContentState extends State<_SplashScreenContent>
           }
         },
         builder: (context, state) => switch (state.status) {
-          SplashScreenStatus.loading => const FlutterLogo(),
-          SplashScreenStatus.animationFinished => const Column(
+          SplashScreenStatus.loading => Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FlutterLogo(),
+              Assets.animations.pokeballLoading.lottie(
+                height: 70,
+                errorBuilder: (context, error, stackTrace) =>
+                    Assets.images.pokeballWhite.image(height: 70),
+              ),
               AppSeparators.vSm,
-              CircularProgressIndicator.adaptive(),
+              Text(
+                "Cargando",
+                style: context.textTheme.titleLarge?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          SplashScreenStatus.animationFinished => Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Assets.animations.pokeballLoading.lottie(
+                height: 70,
+                errorBuilder: (context, error, stackTrace) =>
+                    Assets.images.pokeballWhite.image(height: 70),
+              ),
+              AppSeparators.vSm,
+              const Text("Cargando"),
             ],
           ),
           SplashScreenStatus.success => const FlutterLogo(),

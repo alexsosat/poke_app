@@ -20,12 +20,12 @@ class PokeApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       //Theming
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       theme: MaterialTheme(
-        createTextTheme(context, "Poppins", "Poppins"),
+        createTextTheme(context, "Jersey 10", "Jersey 10"),
       ).light(),
       darkTheme: MaterialTheme(
-        createTextTheme(context, "Poppins", "Poppins"),
+        createTextTheme(context, "Jersey 10", "Jersey 10"),
       ).dark(),
 
       localizationsDelegates: const [FlutterCommonLocalizations.delegate],

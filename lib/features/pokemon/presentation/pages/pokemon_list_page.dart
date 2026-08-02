@@ -2,6 +2,7 @@ import "package:auto_route/auto_route.dart";
 import "package:flutter/material.dart";
 import "package:flutter_common_classes/flutter_common_classes.dart" hide Image;
 
+import "../../../../core/gen/assets.gen.dart";
 import "../../business/entities/pokemon_entity.dart";
 import "../../data/models/mocks/pokemon_mock_entity.dart";
 import "../cubits/pokemon_infinite_list_cubit.dart";
@@ -21,6 +22,33 @@ class PokemonListPage
   @override
   LoadingStyle get loadingStyle => SkeletonizerLoadingStyle(
     mockData: List.generate(9, (_) => PokemonMock().mockData()),
+  );
+
+  @override
+  Widget? pageScaffold(Widget child) => Scaffold(
+    appBar: AppBar(
+      title: const Text("Pokédex"),
+      centerTitle: false,
+      leading: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Assets.images.pokeballWhite.image(),
+      ),
+      // bottom: PokemonGridFilterOptions(),
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(4),
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: child,
+        ),
+      ),
+    ),
   );
 
   @override
