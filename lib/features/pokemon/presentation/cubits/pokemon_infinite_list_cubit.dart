@@ -8,9 +8,9 @@ import "../../business/use_cases/get_pokemon_list.dart";
 import "../../data/models/params/pokemon_list_params.dart";
 
 /// Cubit to handle the inifinite list
-class PokemonInfiniteListCubit2 extends Cubit<StateMixin<List<PokemonEntity>>> {
+class PokemonInfiniteListCubit extends Cubit<StateMixin<List<PokemonEntity>>> {
   /// Cubit to handle the inifinite list
-  PokemonInfiniteListCubit2(List<PokemonEntity> initialData, int length)
+  PokemonInfiniteListCubit(List<PokemonEntity> initialData, int length)
     : super(StateMixin.success(initialData)) {
     pokemons = initialData;
     params = PokemonListParams(offset: initialData.length, limit: length);
@@ -55,7 +55,9 @@ class PokemonInfiniteListCubit2 extends Cubit<StateMixin<List<PokemonEntity>>> {
     });
 
     if (failure != null) {
+      logger.e(failure);
       emit(StateMixin.failure(failure!));
+      return;
     }
 
     logger.i("data length: ${newData.length}");
@@ -65,5 +67,11 @@ class PokemonInfiniteListCubit2 extends Cubit<StateMixin<List<PokemonEntity>>> {
 
     logger.i("emitted");
     emit(StateMixin.success(newData));
+  }
+
+  /// Clears the error and loads more pokemons
+  void retry() {
+    emit(StateMixin<List<PokemonEntity>>.initial());
+    loadMore();
   }
 }

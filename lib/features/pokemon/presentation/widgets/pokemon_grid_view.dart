@@ -4,7 +4,7 @@ import "package:shimmer/shimmer.dart";
 
 import "../../../../core/constants/theme/app_separators.dart";
 import "../../business/entities/pokemon_entity.dart";
-import "../cubits/pokemon_infinite_list_cubit_2.dart";
+import "../cubits/pokemon_infinite_list_cubit.dart";
 import "pokemon_grid_card.dart";
 
 /// Widget that showcase the pokemons in a grid view
@@ -49,13 +49,13 @@ class _PokemonGridViewState extends State<PokemonGridView> {
     final maxScroll = scrollController.position.maxScrollExtent;
     final currentScroll = scrollController.position.pixels;
     if (maxScroll - currentScroll <= 80) {
-      context.read<PokemonInfiniteListCubit2>().loadMore();
+      context.read<PokemonInfiniteListCubit>().loadMore();
     }
   }
 
   @override
   Widget build(BuildContext context) =>
-      BlocListener<PokemonInfiniteListCubit2, StateMixin<List<PokemonEntity>>>(
+      BlocListener<PokemonInfiniteListCubit, StateMixin<List<PokemonEntity>>>(
         listener: _gridListener,
 
         child: GridView.builder(
@@ -68,7 +68,7 @@ class _PokemonGridViewState extends State<PokemonGridView> {
           ),
           itemBuilder: (context, index) {
             if (index == pokemons.length) {
-              return _GridLoadingCard();
+              return const _GridLoadingCard();
             }
             final pokemon = pokemons[index];
             return PokemonGridCard(pokemon: pokemon);
@@ -81,7 +81,7 @@ class _PokemonGridViewState extends State<PokemonGridView> {
     StateMixin<List<PokemonEntity>> state,
   ) {
     if (state.status == WidgetStatus.success) {
-      final cubitPokemons = context.read<PokemonInfiniteListCubit2>().pokemons;
+      final cubitPokemons = context.read<PokemonInfiniteListCubit>().pokemons;
 
       if (cubitPokemons.length != pokemons.length) {
         setState(() {
@@ -99,37 +99,56 @@ class _GridLoadingCard extends StatelessWidget {
   Widget build(BuildContext context) => ClipRRect(
     borderRadius: BorderRadius.circular(15),
     child:
-        CubitWidgetStateBuilder<PokemonInfiniteListCubit2, List<PokemonEntity>>(
-          onSuccess: (_) => const ShimmerGridCard(),
-          onLoading: const ShimmerGridCard(),
-          onFailure: (failure) => Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.error, color: Colors.red, size: 24),
-                Text(failure.title),
-                AppSeparators.vSm,
-                Text(failure.message),
-              ],
-            ),
-          ),
+        CubitWidgetStateBuilder<PokemonInfiniteListCubit, List<PokemonEntity>>(
+          onSuccess: (_) => const _ShimmerGridCard(),
+          onLoading: const _ShimmerGridCard(),
+          onInitial: const _ShimmerGridCard(),
+          onFailure: (failure) => _FailureGridCard(failure: failure),
         ),
   );
 }
 
 /// Loading Grid Card
-class ShimmerGridCard extends StatelessWidget {
+class _ShimmerGridCard extends StatelessWidget {
   /// Loading Grid Card
-  const ShimmerGridCard({super.key});
+  const _ShimmerGridCard();
 
   @override
   Widget build(BuildContext context) => Shimmer.fromColors(
     baseColor: Colors.grey.shade300,
     highlightColor: Colors.white,
     child: SizedBox(
-      height: 100,
-      width: 200,
+      height: double.infinity,
+      width: double.infinity,
       child: Container(color: Colors.red),
     ),
   );
+}
+
+/// Grid card for failure messages
+class _FailureGridCard extends StatelessWidget {
+  /// Grid card for failure messages
+  const _FailureGridCard({required this.failure});
+
+  /// Failure message
+  final Failure failure;
+
+  @override
+  Widget build(BuildContext context) => Card(
+    child: InkWell(
+      onTap: () => _onTap(context),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.error, color: Colors.red, size: 24),
+          AppSeparators.vSm,
+          Text(failure.title, textAlign: TextAlign.center),
+        ],
+      ),
+    ),
+  );
+
+  void _onTap(BuildContext context) {
+    context.read<PokemonInfiniteListCubit>().retry();
+  }
 }

@@ -35,7 +35,15 @@ class PokemonGridCard extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Image.network(pokemon.imageUrl, fit: BoxFit.contain),
+              child: Image.network(
+                pokemon.imageUrl,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) => Icon(
+                  Icons.question_mark,
+                  size: 50,
+                  color: Colors.grey.shade500,
+                ),
+              ),
             ),
             Align(
               alignment: Alignment.bottomCenter,

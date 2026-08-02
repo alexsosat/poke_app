@@ -1,3 +1,5 @@
+import "package:device_preview_minus/device_preview_minus.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_common_classes/config/environment_config.dart"
     hide EnvironmentConfig;
@@ -11,5 +13,10 @@ void main() async {
 
   await DependencyInjection.injectCriticalServices();
 
-  runApp(const PokeApp());
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => const PokeApp(),
+    ),
+  );
 }
