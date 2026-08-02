@@ -94,7 +94,7 @@ class _SplashScreenContentState extends State<_SplashScreenContent>
               ),
               AppSeparators.vSm,
               Text(
-                "Cargando",
+                "Loading",
                 style: context.textTheme.titleLarge?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -114,7 +114,12 @@ class _SplashScreenContentState extends State<_SplashScreenContent>
               const Text("Cargando"),
             ],
           ),
-          SplashScreenStatus.success => const FlutterLogo(),
+          SplashScreenStatus.success =>
+            Assets.animations.pokeballLoading.lottie(
+              height: 70,
+              errorBuilder: (context, error, stackTrace) =>
+                  Assets.images.pokeballWhite.image(height: 70),
+            ),
           SplashScreenStatus.failure => Text(
             state.failure!.message,
             style: context.textTheme.headlineLarge?.copyWith(

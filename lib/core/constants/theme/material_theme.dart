@@ -346,6 +346,21 @@ class MaterialTheme {
     useMaterial3: true,
     brightness: colorScheme.brightness,
     colorScheme: colorScheme,
+    radioTheme: RadioThemeData(
+      fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+        if (states.contains(WidgetState.selected)) {
+          return Colors.red;
+        }
+        return Colors.blueGrey;
+      }),
+    ),
+
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.red, // Sets the blinking cursor color
+      selectionColor:
+          Colors.yellow, // Sets the highlighted text background color
+      selectionHandleColor: Colors.red, // Sets the teardrop handle color
+    ),
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.red,
       foregroundColor: Colors.white,

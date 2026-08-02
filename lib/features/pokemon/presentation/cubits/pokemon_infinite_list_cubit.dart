@@ -4,16 +4,24 @@ import "package:flutter_common_classes/flutter_common_classes.dart";
 import "package:get_it/get_it.dart";
 
 import "../../business/entities/pokemon_entity.dart";
+import "../../business/enums/list_sort_types_enum.dart";
 import "../../business/use_cases/get_pokemon_list.dart";
 import "../../data/models/params/pokemon_list_params.dart";
 
 /// Cubit to handle the inifinite list
 class PokemonInfiniteListCubit extends Cubit<StateMixin<List<PokemonEntity>>> {
   /// Cubit to handle the inifinite list
-  PokemonInfiniteListCubit(List<PokemonEntity> initialData, int length)
-    : super(StateMixin.success(initialData)) {
+  PokemonInfiniteListCubit(
+    List<PokemonEntity> initialData,
+    int length,
+    ListSortTypesEnum sort,
+  ) : super(StateMixin.success(initialData)) {
     pokemons = initialData;
-    params = PokemonListParams(offset: initialData.length, limit: length);
+    params = PokemonListParams(
+      offset: initialData.length,
+      limit: length,
+      sort: sort,
+    );
   }
 
   final Logger logger = getLogger("Infinite List");
@@ -62,7 +70,11 @@ class PokemonInfiniteListCubit extends Cubit<StateMixin<List<PokemonEntity>>> {
 
     logger.i("data length: ${newData.length}");
 
-    params = PokemonListParams(offset: newData.length, limit: params.limit);
+    params = PokemonListParams(
+      offset: newData.length,
+      limit: params.limit,
+      sort: params.sort,
+    );
     pokemons = newData;
 
     logger.i("emitted");

@@ -59,7 +59,9 @@ class _PokemonGridViewState extends State<PokemonGridView> {
         listener: _gridListener,
 
         child: GridView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(
+            vertical: 20,
+          ),
           controller: scrollController,
           itemCount: pokemons.length + 1,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

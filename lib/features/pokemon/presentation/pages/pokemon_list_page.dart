@@ -7,6 +7,7 @@ import "../../business/entities/pokemon_entity.dart";
 import "../../data/models/mocks/pokemon_mock_entity.dart";
 import "../cubits/pokemon_infinite_list_cubit.dart";
 import "../cubits/pokemon_list_cubit.dart";
+import "../widgets/pokemon_grid_filter_options.dart";
 import "../widgets/pokemon_grid_view.dart";
 
 /// Page that shows all the pokemons in a list style
@@ -33,10 +34,10 @@ class PokemonListPage
         padding: const EdgeInsets.all(15),
         child: Assets.images.pokeballWhite.image(),
       ),
-      // bottom: PokemonGridFilterOptions(),
+      bottom: const PokemonGridFilterOptions(),
     ),
     body: Padding(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4, top: 20),
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
@@ -53,7 +54,11 @@ class PokemonListPage
 
   @override
   Widget view(BuildContext context, List<PokemonEntity> data) => BlocProvider(
-    create: (_) => PokemonInfiniteListCubit(data, data.length),
+    create: (_) => PokemonInfiniteListCubit(
+      data,
+      data.length,
+      context.read<PokemonListCubit>().params.sort,
+    ),
     child: PokemonGridView(initialPokemons: data),
   );
 }
