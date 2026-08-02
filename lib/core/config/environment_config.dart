@@ -30,6 +30,6 @@ class EnvironmentConfig {
   };
 
   static const Map<String, dynamic> _prodVariables = {
-    apiUrlKey: "https://pokeapi.co/api/v2",
+    apiUrlKey: "https://beta.pokeapi.co/graphql/v1beta",
   };
 }

@@ -9,6 +9,10 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
     AutoRoute(page: SplashRoute.page, path: RoutesNames.initial, initial: true),
+    AutoRoute(
+      page: PokemonInfiniteListRoute.page,
+      path: RoutesNames.infiniteHome,
+    ),
     AutoRoute(page: PokemonListRoute.page, path: RoutesNames.home),
   ];
 }

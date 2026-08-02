@@ -12,4 +12,15 @@ class PokemonListParams extends Params {
 
   @override
   Map<String, dynamic> queries() => {"offset": offset, "limit": limit};
+
+  /// GraphQL query for pokemon graphQL endpoint
+  String get graphQLQuery =>
+      """
+      query {
+        pokemon_v2_pokemon(order_by: { id: asc }, limit: $limit, offset: $offset) {
+          id
+          name
+        }
+      }
+    """;
 }

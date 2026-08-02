@@ -8,10 +8,8 @@ class PokemonModel extends PokemonEntity {
   const PokemonModel({required super.id, required super.name});
 
   /// Factory method to create a Pokemon model instance from a map
-  factory PokemonModel.fromMap({
-    required Map<String, dynamic> map,
-    required int index,
-  }) => PokemonModel(id: index, name: map["name"]);
+  factory PokemonModel.fromMap({required Map<String, dynamic> map}) =>
+      PokemonModel(id: map["id"], name: map["name"]);
 
   /// Factory method to create a Pokemon model instance from an
   /// entity

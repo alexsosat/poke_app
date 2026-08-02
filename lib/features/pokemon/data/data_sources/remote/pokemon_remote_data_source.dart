@@ -1,4 +1,4 @@
-import "package:fpdart/fpdart.dart";
+import "dart:convert";
 
 import "../../../../../core/adapters/dio_adapter.dart";
 import "../../models/dtos/pokemon_model.dart";
@@ -22,19 +22,19 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
   Future<List<PokemonModel>> getPokemons({
     required PokemonListParams params,
   }) async {
-    final response = await dio.get(
-      "/pokemon",
-      queryParameters: params.queries(),
+    final response = await dio.post(
+      "",
+      data: jsonEncode({"query": params.graphQLQuery}),
     );
 
     if (response.data is! Map) {
       return [];
-    } else if (response.data["results"] is! List) {
+    } else if (response.data["data"]["pokemon_v2_pokemon"] is! List) {
       return [];
     }
 
-    return (response.data["results"] as List<dynamic>)
-        .mapWithIndex((e, i) => PokemonModel.fromMap(map: e, index: i + 1))
+    return (response.data["data"]["pokemon_v2_pokemon"] as List<dynamic>)
+        .map((e) => PokemonModel.fromMap(map: e))
         .toList();
   }
 }
