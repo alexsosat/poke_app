@@ -6,6 +6,7 @@ import "package:flutter_common_classes/flutter_common_classes.dart" hide Image;
 import "../../../../core/extensions/int_extensions.dart";
 import "../../../../core/routes/app_router.gr.dart";
 import "../../business/entities/pokemon_entity.dart";
+import "../cubits/pokemon_infinite_list_cubit.dart";
 
 /// Card to showcase the pokemon on a grid display
 class PokemonGridCard extends StatelessWidget {
@@ -40,18 +41,21 @@ class PokemonGridCard extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: CachedNetworkImage(
-                  imageUrl: pokemon.imageUrl,
-                  placeholder: (context, url) => Icon(
-                    Icons.question_mark,
-                    size: 50,
-                    color: Colors.grey.shade500,
-                  ),
-                  fit: BoxFit.contain,
-                  errorWidget: (context, error, stackTrace) => Icon(
-                    Icons.question_mark,
-                    size: 50,
-                    color: Colors.grey.shade500,
+                child: Hero(
+                  tag: pokemon.imageUrl,
+                  child: CachedNetworkImage(
+                    imageUrl: pokemon.imageUrl,
+                    placeholder: (context, url) => Icon(
+                      Icons.question_mark,
+                      size: 50,
+                      color: Colors.grey.shade500,
+                    ),
+                    fit: BoxFit.contain,
+                    errorWidget: (context, error, stackTrace) => Icon(
+                      Icons.question_mark,
+                      size: 50,
+                      color: Colors.grey.shade500,
+                    ),
                   ),
                 ),
               ),
@@ -88,6 +92,9 @@ class PokemonGridCard extends StatelessWidget {
   );
 
   void _onCardTap(BuildContext context) => context.router.push(
-    PokemonRoute(pokemon: pokemon),
+    PokemonRoute(
+      pokemon: pokemon,
+      listCubit: context.read<PokemonInfiniteListCubit>(),
+    ),
   );
 }

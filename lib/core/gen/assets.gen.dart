@@ -26,12 +26,20 @@ class $AssetsAnimationsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/ic_launcher.png
+  AssetGenImage get icLauncher =>
+      const AssetGenImage('assets/images/ic_launcher.png');
+
+  /// File path: assets/images/pokeball.png
+  AssetGenImage get pokeball =>
+      const AssetGenImage('assets/images/pokeball.png');
+
   /// File path: assets/images/pokeball_white.png
   AssetGenImage get pokeballWhite =>
       const AssetGenImage('assets/images/pokeball_white.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [pokeballWhite];
+  List<AssetGenImage> get values => [icLauncher, pokeball, pokeballWhite];
 }
 
 abstract final class Assets {

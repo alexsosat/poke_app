@@ -6,10 +6,12 @@ import "package:flutter_common_classes/flutter_common_classes.dart" hide Image;
 import "../../../../core/constants/theme/app_separators.dart";
 import "../../../../core/extensions/int_extensions.dart";
 import "../../../../core/gen/assets.gen.dart";
+import "../../../../core/routes/app_router.gr.dart";
 import "../../business/entities/pokemon_details_entity.dart";
 import "../../business/entities/pokemon_entity.dart";
 import "../../data/models/mocks/pokemon_details_mock_entity.dart";
 import "../cubits/pokemon_cubit.dart";
+import "../cubits/pokemon_infinite_list_cubit.dart";
 import "../widgets/details/pokemon_details_card.dart";
 
 /// Page to show all pokemon details
@@ -18,14 +20,20 @@ class PokemonPage extends PageLoaderWidget<PokemonCubit, PokemonDetailsEntity> {
   /// Page to show all pokemon details
   const PokemonPage({
     required this.pokemon,
+    required this.listCubit,
     super.key,
   });
 
   /// ID of the pokemon to retrieve details from
   final PokemonEntity pokemon;
 
+  /// List cubit
+  final PokemonInfiniteListCubit listCubit;
+
   @override
-  PokemonCubit get mainCubit => PokemonCubit(pokemonId: pokemon.id);
+  PokemonCubit get mainCubit => PokemonCubit(
+    pokemonId: pokemon.id,
+  );
 
   @override
   LoadingStyle get loadingStyle => SkeletonizerLoadingStyle(
@@ -33,26 +41,26 @@ class PokemonPage extends PageLoaderWidget<PokemonCubit, PokemonDetailsEntity> {
   );
 
   @override
-  Widget? pageScaffold(Widget child) => Scaffold(
-    backgroundColor: pokemon.color,
+  Widget? pageScaffold(Widget child) => BlocProvider.value(
+    value: listCubit,
+    child: Scaffold(
+      backgroundColor: pokemon.color,
 
-    body: SafeArea(
-      bottom: false,
-      child: Stack(
-        children: [
-          _PokemonHeader(pokemon: pokemon),
-          child,
-          Align(
-            alignment: const FractionalOffset(0.5, 0.390),
-            child: FractionalTranslation(
-              translation: const Offset(0, -0.5),
-              child: CachedNetworkImage(
-                imageUrl: pokemon.imageUrl,
-                height: 200,
+      body: SafeArea(
+        bottom: false,
+        child: Stack(
+          children: [
+            _PokemonHeader(pokemon: pokemon),
+            child,
+            Align(
+              alignment: const FractionalOffset(0.5, 0.390),
+              child: FractionalTranslation(
+                translation: const Offset(0, -0.5),
+                child: _PokemonImage(pokemon: pokemon),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );
@@ -68,7 +76,10 @@ class PokemonPage extends PageLoaderWidget<PokemonCubit, PokemonDetailsEntity> {
             padding: const EdgeInsets.only(right: 5),
             child: Opacity(
               opacity: 0.2,
-              child: Assets.images.pokeballWhite.image(),
+              child: Hero(
+                tag: "pokeball",
+                child: Assets.images.pokeballWhite.image(),
+              ),
             ),
           ),
         ),
@@ -83,6 +94,92 @@ class PokemonPage extends PageLoaderWidget<PokemonCubit, PokemonDetailsEntity> {
       ),
     ],
   );
+}
+
+class _PokemonImage extends StatelessWidget {
+  const _PokemonImage({
+    required this.pokemon,
+  });
+
+  final PokemonEntity pokemon;
+
+  @override
+  Widget build(BuildContext context) => Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Visibility(
+        visible:
+            context.read<PokemonInfiniteListCubit>().getPreviousPokemon(
+              pokemon,
+            ) !=
+            null,
+        maintainAnimation: true,
+        maintainSize: true,
+        maintainState: true,
+        child: IconButton(
+          onPressed: () => _goToPreviousPokemon(context),
+          color: Colors.white,
+          icon: const Icon(Icons.chevron_left),
+        ),
+      ),
+      Hero(
+        tag: pokemon.imageUrl,
+        child: CachedNetworkImage(
+          imageUrl: pokemon.imageUrl,
+          height: 200,
+        ),
+      ),
+      Visibility(
+        visible:
+            context.read<PokemonInfiniteListCubit>().getNextPokemon(
+              pokemon,
+            ) !=
+            null,
+        maintainAnimation: true,
+        maintainSize: true,
+        maintainState: true,
+        child: IconButton(
+          onPressed: () => _goToNextPokemon(context),
+          color: Colors.white,
+          icon: const Icon(Icons.chevron_right),
+        ),
+      ),
+    ],
+  );
+
+  void _goToPreviousPokemon(BuildContext context) {
+    final prevPokemon = context
+        .read<PokemonInfiniteListCubit>()
+        .getPreviousPokemon(pokemon);
+
+    if (prevPokemon == null) {
+      return;
+    }
+
+    context.router.replace(
+      PokemonRoute(
+        pokemon: prevPokemon,
+        listCubit: context.read<PokemonInfiniteListCubit>(),
+      ),
+    );
+  }
+
+  void _goToNextPokemon(BuildContext context) {
+    final nextPokemon = context.read<PokemonInfiniteListCubit>().getNextPokemon(
+      pokemon,
+    );
+
+    if (nextPokemon == null) {
+      return;
+    }
+
+    context.router.replace(
+      PokemonRoute(
+        pokemon: nextPokemon,
+        listCubit: context.read<PokemonInfiniteListCubit>(),
+      ),
+    );
+  }
 }
 
 class _PokemonHeader extends StatelessWidget {

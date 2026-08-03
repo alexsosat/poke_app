@@ -95,8 +95,17 @@ class PokemonInfiniteListCubit extends Cubit<StateMixin<List<PokemonEntity>>> {
     loadMore();
   }
 
-  /// Sets has more to false
-  void noMorePokemons() {
-    hasMore = false;
+  /// returns the previous pokemon
+  PokemonEntity? getPreviousPokemon(PokemonEntity pokemon) {
+    final index = pokemons.indexOf(pokemon);
+
+    return index > 0 ? pokemons[index - 1] : null;
+  }
+
+  /// returns the next pokemon
+  PokemonEntity? getNextPokemon(PokemonEntity pokemon) {
+    final index = pokemons.indexOf(pokemon);
+
+    return index < pokemons.length - 1 ? pokemons[index + 1] : null;
   }
 }

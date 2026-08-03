@@ -34,6 +34,7 @@ dev_dependencies:
   auto_route_generator: ^10.6.0
   flutter_gen_runner: ^5.14.1
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
 
@@ -53,3 +54,9 @@ flutter_gen:
     flutter_svg: true
     rive: false
     lottie: true
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/ic_launcher.png"
+  remove_alpha_ios: true

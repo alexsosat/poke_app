@@ -32,7 +32,10 @@ class PokemonListPage
       centerTitle: false,
       leading: Padding(
         padding: const EdgeInsets.all(15),
-        child: Assets.images.pokeballWhite.image(),
+        child: Hero(
+          tag: "pokeball",
+          child: Assets.images.pokeballWhite.image(),
+        ),
       ),
       bottom: const PokemonGridFilterOptions(),
     ),
