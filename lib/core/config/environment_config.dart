@@ -14,7 +14,7 @@ class EnvironmentConfig {
   /// Initializes the environment configuration.
   static void init({required Flavor flavor}) {
     FlavorConfig(
-      name: flavor.name,
+      name: flavor == Flavor.production ? null : flavor.name,
       color: Colors.red,
       location: BannerLocation.topStart,
       variables: _getVariables(flavor),

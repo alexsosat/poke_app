@@ -8,6 +8,7 @@ import "../../../../core/constants/theme/app_separators.dart";
 import "../../../../core/extensions/int_extensions.dart";
 import "../../../../core/gen/assets.gen.dart";
 import "../../../../core/routes/app_router.gr.dart";
+import "../../../shared/presentation/views/pokemon_failure_view.dart";
 import "../../business/entities/pokemon_details_entity.dart";
 import "../../business/entities/pokemon_entity.dart";
 import "../../data/models/mocks/pokemon_details_mock_entity.dart";
@@ -39,6 +40,50 @@ class PokemonPage extends PageLoaderWidget<PokemonCubit, PokemonDetailsEntity> {
   @override
   LoadingStyle get loadingStyle => SkeletonizerLoadingStyle(
     mockData: PokemonDetailsMock().mockData(),
+  );
+
+  @override
+  Widget errorWidget(BuildContext context, Failure failure) => CustomScrollView(
+    slivers: [
+      SliverFillRemaining(
+        hasScrollBody: false,
+        fillOverscroll: false,
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: Hero(
+                      tag: "pokeball",
+                      child: Skeleton.keep(
+                        child: Assets.images.pokeballWhite.image(
+                          height: 250,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            AppSeparators.vSm,
+            Expanded(
+              flex: 2,
+              child: Card(
+                child: PokemonFailureView(
+                  failure,
+                  height: 200,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
   );
 
   @override

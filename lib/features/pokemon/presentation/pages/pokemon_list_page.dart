@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter_common_classes/flutter_common_classes.dart" hide Image;
 
 import "../../../../core/gen/assets.gen.dart";
+import "../../../shared/presentation/views/pokemon_failure_view.dart";
 import "../../business/entities/pokemon_entity.dart";
 import "../../data/models/mocks/pokemon_mock_entity.dart";
 import "../cubits/pokemon_infinite_list_cubit.dart";
@@ -23,6 +24,19 @@ class PokemonListPage
   @override
   LoadingStyle get loadingStyle => SkeletonizerLoadingStyle(
     mockData: List.generate(9, (_) => PokemonMock().mockData()),
+  );
+
+  @override
+  Widget errorWidget(BuildContext context, Failure failure) => CustomScrollView(
+    slivers: [
+      SliverFillRemaining(
+        hasScrollBody: false,
+        fillOverscroll: false,
+        child: PokemonFailureView(
+          failure,
+        ),
+      ),
+    ],
   );
 
   @override

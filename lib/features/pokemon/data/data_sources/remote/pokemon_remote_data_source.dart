@@ -38,11 +38,19 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
 
     if (response.data is! Map) {
       return [];
-    } else if (response.data["data"]["pokemon_v2_pokemon"] is! List) {
-      return [];
     }
 
-    return (response.data["data"]["pokemon_v2_pokemon"] as List<dynamic>)
+    final data = response.data as Map;
+
+    if (data.containsKey("errors")) {
+      final error = data["errors"][0] as Map;
+
+      throw ClientErrorException.badRequest(
+        message: error["message"],
+      );
+    }
+
+    return (data["data"]["pokemon_v2_pokemon"] as List<dynamic>)
         .map((e) => PokemonModel.fromMap(map: e))
         .toList();
   }
