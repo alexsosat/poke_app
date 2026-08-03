@@ -1,15 +1,23 @@
 import "package:equatable/equatable.dart";
+import "package:flutter/material.dart";
 
 /// Entity that contains the data of the Pokemon.
 class PokemonEntity extends Equatable {
   /// Entity that contains the data of the Pokemon.
-  const PokemonEntity({required this.id, required this.name});
+  const PokemonEntity({
+    required this.id,
+    required this.name,
+    required this.color,
+  });
 
   /// ID of the pokemon
   final int id;
 
   /// Name of the pokemon
   final String name;
+
+  /// Color of the pokemon
+  final Color color;
 
   /// Image URL of the pokemon
   String get imageUrl =>

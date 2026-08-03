@@ -1,3 +1,4 @@
+import "package:flutter/material.dart";
 import "package:flutter_common_classes/constants/classes/mock_model.dart";
 
 import "../dtos/pokemon_model.dart";
@@ -8,5 +9,9 @@ class PokemonMock implements MockModel<PokemonModel> {
   PokemonMock();
 
   @override
-  PokemonModel mockData() => const PokemonModel(id: 1, name: "Pokemon");
+  PokemonModel mockData() => const PokemonModel(
+    id: 1,
+    name: "Pokemon",
+    color: Colors.white,
+  );
 }

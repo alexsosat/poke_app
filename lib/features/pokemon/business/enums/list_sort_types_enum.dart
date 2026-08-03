@@ -35,4 +35,20 @@ extension ListSortTypeExtension on ListSortTypesEnum {
         return Icons.numbers;
     }
   }
+
+  /// search keyword
+  String get searchKeyword => switch (this) {
+    ListSortTypesEnum.alphabetical => "_ilike",
+    ListSortTypesEnum.id => "_eq",
+  };
+
+  /// Search query
+  String searchQuery(String search) {
+    switch (this) {
+      case ListSortTypesEnum.alphabetical:
+        return "%$search%";
+      case ListSortTypesEnum.id:
+        return search;
+    }
+  }
 }

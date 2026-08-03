@@ -10,5 +10,9 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
     AutoRoute(page: SplashRoute.page, path: RoutesNames.initial, initial: true),
     AutoRoute(page: PokemonListRoute.page, path: RoutesNames.home),
+    AutoRoute(
+      page: PokemonRoute.page,
+      path: RoutesNames.pokemon,
+    ),
   ];
 }

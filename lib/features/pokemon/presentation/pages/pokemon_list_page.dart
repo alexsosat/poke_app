@@ -56,8 +56,9 @@ class PokemonListPage
   Widget view(BuildContext context, List<PokemonEntity> data) => BlocProvider(
     create: (_) => PokemonInfiniteListCubit(
       data,
-      data.length,
+      context.read<PokemonListCubit>().params.limit,
       context.read<PokemonListCubit>().params.sort,
+      context.read<PokemonListCubit>().params.search,
     ),
     child: PokemonGridView(initialPokemons: data),
   );

@@ -31,4 +31,15 @@ class PokemonListCubit extends AutoLoaderCubit<List<PokemonEntity>> {
     );
     getInfo();
   }
+
+  /// Queries the pokemon list with the given search term
+  void changePokemonSearch(String? search) {
+    params = PokemonListParams(
+      sort: params.sort,
+      offset: 0,
+      limit: 20,
+      search: search,
+    );
+    getInfo();
+  }
 }

@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_common_classes/flutter_common_classes.dart";
+import "package:flutter_debouncer/flutter_debouncer.dart";
 
 import "../../../../core/constants/theme/app_separators.dart";
 import "../cubits/pokemon_list_cubit.dart";
@@ -21,11 +22,14 @@ class PokemonGridFilterOptions extends StatefulWidget
 
 class _PokemonGridFilterOptionsState extends State<PokemonGridFilterOptions> {
   late TextEditingController _controller;
+  late Debouncer _debouncer;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    _controller.addListener(_onSearch);
+    _debouncer = Debouncer();
   }
 
   @override
@@ -47,6 +51,16 @@ class _PokemonGridFilterOptionsState extends State<PokemonGridFilterOptions> {
       ),
     ),
   );
+
+  void _onSearch() {
+    const duration = Duration(milliseconds: 700);
+    _debouncer.debounce(
+      duration: duration,
+      onDebounce: () => context.read<PokemonListCubit>().changePokemonSearch(
+        _controller.text,
+      ),
+    );
+  }
 }
 
 class _PokemonListSortTypeButton extends StatelessWidget {

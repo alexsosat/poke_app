@@ -7,5 +7,5 @@ class RoutesNames {
 
   static const initial = "/";
   static const home = "/home";
-  static const infiniteHome = "/infinite-home";
+  static const pokemon = "/pokemon";
 }

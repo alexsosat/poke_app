@@ -2,6 +2,12 @@ part of "splash_screen_cubit.dart";
 
 /// State for the splash screen cubit.
 class SplashScreenState extends Equatable {
+  /// Constructor for the state.
+  const SplashScreenState({
+    required this.status,
+    this.failure,
+  });
+
   /// The failure that occurred.
   final Failure? failure;
 
@@ -10,42 +16,36 @@ class SplashScreenState extends Equatable {
 
   @override
   List<Object?> get props => [
-        failure,
-        status,
-      ];
-
-  /// Constructor for the state.
-  const SplashScreenState({
-    required this.status,
-    this.failure,
-  });
+    failure,
+    status,
+  ];
 }
 
 /// State for when the splash screen is loading.
 class SplashScreenLoading extends SplashScreenState {
   /// State for when the splash screen is loading.
   const SplashScreenLoading()
-      : super(
-          status: SplashScreenStatus.loading,
-        );
+    : super(
+        status: SplashScreenStatus.loading,
+      );
 }
 
 /// State for when the splash screen animation has finished.
 class SplashScreenAnimationFinished extends SplashScreenState {
   /// State for when the splash screen animation has finished.
   const SplashScreenAnimationFinished()
-      : super(
-          status: SplashScreenStatus.animationFinished,
-        );
+    : super(
+        status: SplashScreenStatus.animationFinished,
+      );
 }
 
 /// State for when the splash screen has successfully loaded.
 class SplashScreenSuccess extends SplashScreenState {
   /// State for when the splash screen has successfully loaded.
   const SplashScreenSuccess()
-      : super(
-          status: SplashScreenStatus.success,
-        );
+    : super(
+        status: SplashScreenStatus.success,
+      );
 }
 
 /// State for when the splash screen has failed to load.
@@ -54,9 +54,9 @@ class SplashScreenFailure extends SplashScreenState {
   const SplashScreenFailure({
     required Failure failure,
   }) : super(
-          status: SplashScreenStatus.failure,
-          failure: failure,
-        );
+         status: SplashScreenStatus.failure,
+         failure: failure,
+       );
 }
 
 /// Enum for the status of the splash screen.

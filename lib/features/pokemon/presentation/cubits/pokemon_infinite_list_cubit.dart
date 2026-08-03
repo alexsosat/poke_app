@@ -15,15 +15,20 @@ class PokemonInfiniteListCubit extends Cubit<StateMixin<List<PokemonEntity>>> {
     List<PokemonEntity> initialData,
     int length,
     ListSortTypesEnum sort,
+    String? search,
   ) : super(StateMixin.success(initialData)) {
     pokemons = initialData;
     params = PokemonListParams(
       offset: initialData.length,
       limit: length,
       sort: sort,
+      search: search,
     );
+
+    hasMore = initialData.length == length;
   }
 
+  /// Logge r for the cubit
   final Logger logger = getLogger("Infinite List");
 
   /// params to fetch new pokemons
@@ -33,7 +38,7 @@ class PokemonInfiniteListCubit extends Cubit<StateMixin<List<PokemonEntity>>> {
   late List<PokemonEntity> pokemons;
 
   /// Flag to check if there are more pokemons to load
-  bool hasMore = true;
+  late bool hasMore;
 
   /// Load more pokemons
   Future<void> loadMore() async {
@@ -56,7 +61,9 @@ class PokemonInfiniteListCubit extends Cubit<StateMixin<List<PokemonEntity>>> {
     List<PokemonEntity> newData = List.from(pokemons);
 
     result.fold((f) => failure = f, (data) {
+      logger.e("Data length: ${data.length} | params limit: ${params.limit}");
       if (data.isEmpty || data.length < params.limit) {
+        logger.e("hasMore: false");
         hasMore = false;
       }
       newData.addAll(data);
@@ -74,6 +81,7 @@ class PokemonInfiniteListCubit extends Cubit<StateMixin<List<PokemonEntity>>> {
       offset: newData.length,
       limit: params.limit,
       sort: params.sort,
+      search: params.search,
     );
     pokemons = newData;
 
@@ -85,5 +93,10 @@ class PokemonInfiniteListCubit extends Cubit<StateMixin<List<PokemonEntity>>> {
   void retry() {
     emit(StateMixin<List<PokemonEntity>>.initial());
     loadMore();
+  }
+
+  /// Sets has more to false
+  void noMorePokemons() {
+    hasMore = false;
   }
 }

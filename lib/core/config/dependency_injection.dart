@@ -1,9 +1,7 @@
 import "package:flutter/material.dart";
-
 import "package:flutter_common_classes/services/connection/network_info.dart";
 import "package:flutter_flavor/flutter_flavor.dart";
 import "package:get_it/get_it.dart";
-import "package:shared_preferences/shared_preferences.dart";
 
 import "../../features/pokemon/business/repositories/pokemon_repository.dart";
 import "../../features/pokemon/data/data_sources/remote/pokemon_remote_data_source.dart";
@@ -16,12 +14,6 @@ class DependencyInjection {
   /// Inject the services in the application
   static Future<void> injectCriticalServices() async {
     WidgetsFlutterBinding.ensureInitialized();
-
-    // Initialize SharedPreferences with cache options containing key allowList
-    final sharedPrefs = await SharedPreferencesWithCache.create(
-      cacheOptions: const SharedPreferencesWithCacheOptions(),
-    );
-    GetIt.I.registerSingleton<SharedPreferencesWithCache>(sharedPrefs);
   }
 
   /// Initialize the services in the application
@@ -33,7 +25,6 @@ class DependencyInjection {
   /// These repositories are loaded during the splash screen
   static Future<void> injectRepositories() async {
     final env = FlavorConfig.instance.variables;
-    final sharedPreferencesInstance = GetIt.I.get<SharedPreferencesWithCache>();
 
     final internetInfo = NetworkInfoImpl(InternetConnection());
 

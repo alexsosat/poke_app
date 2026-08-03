@@ -63,14 +63,17 @@ class _PokemonGridViewState extends State<PokemonGridView> {
             vertical: 20,
           ),
           controller: scrollController,
-          itemCount: pokemons.length + 1,
+          itemCount: context.read<PokemonInfiniteListCubit>().hasMore
+              ? pokemons.length + 1
+              : pokemons.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 5,
             mainAxisSpacing: 10,
           ),
           itemBuilder: (context, index) {
-            if (index == pokemons.length) {
+            if (index == pokemons.length &&
+                context.read<PokemonInfiniteListCubit>().hasMore) {
               return const _GridLoadingCard();
             }
             final pokemon = pokemons[index];
@@ -120,9 +123,7 @@ class _ShimmerGridCard extends StatelessWidget {
   Widget build(BuildContext context) => Shimmer.fromColors(
     baseColor: Colors.grey.shade300,
     highlightColor: Colors.white,
-    child: SizedBox(
-      height: double.infinity,
-      width: double.infinity,
+    child: SizedBox.expand(
       child: Container(color: Colors.red),
     ),
   );
