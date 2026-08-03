@@ -13,7 +13,7 @@ class PokemonDetailsMock implements MockModel<PokemonDetailsModel> {
   PokemonDetailsModel mockData() => PokemonDetailsModel(
     height: 75,
     weight: 69,
-    types: const [PokemonTypes.bug, PokemonTypes.grass],
+    types: const [PokemonTypes.normal, PokemonTypes.normal],
     moves: const ["tackle", "vine whip"],
     description: "A small dinosaur-like Pokémon.",
     stats: PokemonStatsMock().mockData(),

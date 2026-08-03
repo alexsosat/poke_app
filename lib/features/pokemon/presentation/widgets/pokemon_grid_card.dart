@@ -93,6 +93,7 @@ class PokemonGridCard extends StatelessWidget {
 
   void _onCardTap(BuildContext context) => context.router.push(
     PokemonRoute(
+      key: ValueKey(pokemon.id),
       pokemon: pokemon,
       listCubit: context.read<PokemonInfiniteListCubit>(),
     ),

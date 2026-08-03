@@ -2,6 +2,7 @@ import "package:auto_route/auto_route.dart";
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter_common_classes/flutter_common_classes.dart" hide Image;
+import "package:skeletonizer/skeletonizer.dart";
 
 import "../../../../core/constants/theme/app_separators.dart";
 import "../../../../core/extensions/int_extensions.dart";
@@ -66,34 +67,39 @@ class PokemonPage extends PageLoaderWidget<PokemonCubit, PokemonDetailsEntity> {
   );
 
   @override
-  Widget view(BuildContext context, PokemonDetailsEntity data) => Column(
-    children: [
-      Expanded(
-        flex: 1,
-        child: Align(
-          alignment: Alignment.topRight,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 5),
-            child: Opacity(
-              opacity: 0.2,
-              child: Hero(
-                tag: "pokeball",
-                child: Assets.images.pokeballWhite.image(),
+  Widget view(BuildContext context, PokemonDetailsEntity data) {
+    print("Pokemon data: $data");
+    return Column(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: Opacity(
+                opacity: 0.2,
+                child: Hero(
+                  tag: "pokeball",
+                  child: Skeleton.ignore(
+                    child: Assets.images.pokeballWhite.image(),
+                  ),
+                ),
               ),
             ),
           ),
         ),
-      ),
-      AppSeparators.vSm,
-      Expanded(
-        flex: 2,
-        child: PokemonDetailsCard(
-          pokemon: pokemon,
-          pokemonDetails: data,
+        AppSeparators.vSm,
+        Expanded(
+          flex: 2,
+          child: PokemonDetailsCard(
+            pokemon: pokemon,
+            pokemonDetails: data,
+          ),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }
 
 class _PokemonImage extends StatelessWidget {
@@ -158,6 +164,7 @@ class _PokemonImage extends StatelessWidget {
 
     context.router.replace(
       PokemonRoute(
+        key: ValueKey(prevPokemon.id),
         pokemon: prevPokemon,
         listCubit: context.read<PokemonInfiniteListCubit>(),
       ),
@@ -175,6 +182,7 @@ class _PokemonImage extends StatelessWidget {
 
     context.router.replace(
       PokemonRoute(
+        key: ValueKey(nextPokemon.id),
         pokemon: nextPokemon,
         listCubit: context.read<PokemonInfiniteListCubit>(),
       ),
