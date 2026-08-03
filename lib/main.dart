@@ -1,5 +1,4 @@
 import "package:device_preview_minus/device_preview_minus.dart";
-import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_common_classes/config/environment_config.dart"
     hide EnvironmentConfig;
@@ -15,7 +14,7 @@ void main() async {
 
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
+      enabled: false,
       builder: (context) => const PokeApp(),
     ),
   );

@@ -48,7 +48,6 @@ class PokemonPage extends PageLoaderWidget<PokemonCubit, PokemonDetailsEntity> {
       backgroundColor: pokemon.color,
 
       body: SafeArea(
-        bottom: false,
         child: Stack(
           children: [
             _PokemonHeader(pokemon: pokemon),

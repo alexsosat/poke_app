@@ -39,17 +39,19 @@ class PokemonListPage
       ),
       bottom: const PokemonGridFilterOptions(),
     ),
-    body: Padding(
-      padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4, top: 20),
-      child: Container(
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: child,
+    body: SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4, top: 20),
+        child: Container(
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: child,
+          ),
         ),
       ),
     ),
