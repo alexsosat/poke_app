@@ -67,39 +67,36 @@ class PokemonPage extends PageLoaderWidget<PokemonCubit, PokemonDetailsEntity> {
   );
 
   @override
-  Widget view(BuildContext context, PokemonDetailsEntity data) {
-    print("Pokemon data: $data");
-    return Column(
-      children: [
-        Expanded(
-          flex: 1,
-          child: Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: Opacity(
-                opacity: 0.2,
-                child: Hero(
-                  tag: "pokeball",
-                  child: Skeleton.ignore(
-                    child: Assets.images.pokeballWhite.image(),
-                  ),
+  Widget view(BuildContext context, PokemonDetailsEntity data) => Column(
+    children: [
+      Expanded(
+        flex: 1,
+        child: Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: Opacity(
+              opacity: 0.2,
+              child: Hero(
+                tag: "pokeball",
+                child: Skeleton.keep(
+                  child: Assets.images.pokeballWhite.image(),
                 ),
               ),
             ),
           ),
         ),
-        AppSeparators.vSm,
-        Expanded(
-          flex: 2,
-          child: PokemonDetailsCard(
-            pokemon: pokemon,
-            pokemonDetails: data,
-          ),
+      ),
+      AppSeparators.vSm,
+      Expanded(
+        flex: 2,
+        child: PokemonDetailsCard(
+          pokemon: pokemon,
+          pokemonDetails: data,
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }
 
 class _PokemonImage extends StatelessWidget {
